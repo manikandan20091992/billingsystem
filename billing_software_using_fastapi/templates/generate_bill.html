@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Bill</title>
+    <script>
+        function addProductFields() {
+            let container = document.getElementById("product-container");
+
+            let div = document.createElement("div");
+            div.classList.add("product-entry");
+
+            let productLabel = document.createElement("label");
+            productLabel.textContent = "Product ID: ";
+            let productInput = document.createElement("input");
+            productInput.type = "text";
+            productInput.name = "product_ids";
+            productInput.required = true;
+
+            let quantityLabel = document.createElement("label");
+            quantityLabel.textContent = " Quantity: ";
+            let quantityInput = document.createElement("input");
+            quantityInput.type = "text";
+            quantityInput.name = "quantities";
+            quantityInput.required = true;
+
+            let removeButton = document.createElement("button");
+            removeButton.type = "button";
+            removeButton.textContent = "Remove";
+            removeButton.onclick = function() {
+                container.removeChild(div);
+            };
+
+            div.appendChild(productLabel);
+            div.appendChild(productInput);
+            div.appendChild(quantityLabel);
+            div.appendChild(quantityInput);
+            div.appendChild(removeButton);
+            container.appendChild(div);
+        }
+    </script>
+</head>
+<body>
+    <h2>Generate Bill</h2>
+    <form action="/generate_bill" method="post">
+        <label>Customer Email:</label> 
+        <input type="email" name="customer_email" placeholder = "Email" required><br><br>
+
+        <h3>Bill Section</h3>
+        <div id="product-container">
+            <div class="product-entry">
+                <label>Product ID: </label>
+                <input type="text" name="product_ids" placeholder = "Product ID" required>
+                <label> Quantity: </label>
+                <input type="text" name="quantities" placeholder = "Quantity" required >
+            </div>
+        </div>
+        
+        <button type="button" onclick="addProductFields()">Add New</button>
+        <br><br>
+
+        <label>Cash Paid By Customer</label> 
+        <input type="number" name="paid_amount" step="0.01" required placeholder="Amount"><br><br>
+
+        <h3>Denominations</h3>
+        <label>₹500:</label> <input type="number" name="denomination_500"  placeholder="Count"><br>
+        <label>₹200:</label> <input type="number" name="denomination_200"  placeholder="Count"><br>
+        <label>₹100:</label> <input type="number" name="denomination_100" placeholder="Count"><br>
+        <label>₹50:</label> <input type="number" name="denomination_50"  placeholder="Count"><br>
+        <label>₹20:</label> <input type="number" name="denomination_20" placeholder="Count"><br>
+        <label>₹10:</label> <input type="number" name="denomination_10" placeholder="Count"><br>
+        <label>₹5:</label> <input type="number" name="denomination_5" placeholder="Count"><br>
+
+        <br>
+        <input type="submit" value="Generate Bill">
+    </form>
+
+    {% if bill_items %}
+<h2>Bill Details</h2>
+<table border="1">
+    <tr>
+        <th>Product ID</th>
+        <th>Unit Price</th>
+        <th>Quantity</th>
+        
+        <th>Purchase Price</th>
+        
+        <th>Tax % of item</th>
+        <th>Tax Payable for item</th>
+        <th>Total Price of the item</th>
+    </tr>
+    {% for item in bill_items %}
+    <tr>
+        <td>{{ item.product_ids}}</td>
+        <td>{{ item.price }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.price }}</td>
+        <td>{{ item.tax }}</td>
+        <td>{{ item.tax_amount }}</td>
+        <td>{{ item.total }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Total Price with out Tax: ₹{{ total_price }}</h3>
+<h3>Total Tax Payable: ₹{{ total_tax }}</h3>
+<h3>Net price of Purchased item: ₹{{ grand_total }}</h3>
+<h3>Rounded down value of the purchased items net price: ₹{{ round }}</h3>
+<h3>Balance Payable to the customer₹{{ balance }}</h3>
+
+<h3>Denominations Used</h3>
+<ul>
+    <li>₹500: {{ denomination_500 }}</li>
+    <li>₹200: {{ denomination_200 }}</li>
+    <li>₹100: {{ denomination_100 }}</li>
+    <li>₹50: {{ denomination_50 }}</li>
+    <li>₹20: {{ denomination_20 }}</li>
+    <li>₹10: {{ denomination_10 }}</li>
+    <li>₹5: {{ denomination_5 }}</li>
+</ul>
+{% endif %}
