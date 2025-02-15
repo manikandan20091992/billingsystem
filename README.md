@@ -1,12 +1,18 @@
-# billingsystem
-Developed by using fastapi  and Postgresql database used.
+Billing System
+Developed using FastAPI with a PostgreSQL database.
 
-A brief description of what this project does and who it's for. Developed a Billing system software. In Home page having Billing System
-Add Product - To Stock update the Product details
-Update Stock - To Update existing Product details
-View all Product stock - To view all Loaded Product
-Generate Bill - To Generate the purchase bill
+Project Overview
+This project is a Billing System designed for managing product stock and generating purchase bills. The home page provides the following functionalities:
 
-I attached requirment.txt file.
+Add Product – Add new products to the stock.
+Update Stock – Update details of existing products.
+View All Product Stock – View a list of all available products.
+Generate Bill – Generate purchase bills for customers.
+I have attached the requirements.txt file.
+
+Installation
+To get the code, follow these steps:
+git clone "https://github.com/manikandan20091992/billingsystem.git"
+
 
 
